@@ -1,0 +1,1505 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#070d18">
+<title>HIGHBEE BOOST | Create. Promote. Grow.</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+ --navy:#101a2b;
+ --deep:#070d18;
+ --panel:#19263b;
+ --panel2:#263653;
+ --gold:#e5c477;
+ --gold2:#fff0b8;
+ --ivory:#f7f5ed;
+ --muted:#aab5c7;
+ --line:#30405a;
+ --green:#85d6ad;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;background:#0c1422;color:var(--ivory);
+ font-family:Arial,sans-serif;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+
+/* =========================
+   CINEMATIC 3D INTRO
+========================= */
+#hbCinematic{
+ position:fixed;inset:0;z-index:999999;
+ overflow:hidden;display:flex;align-items:center;
+ justify-content:center;
+ background:
+ radial-gradient(ellipse at 50% 42%,#263b59 0%,#111e32 43%,#070d18 78%,#03060c 100%);
+ perspective:1000px;
+ animation:introExit .9s ease 5.1s forwards;
+}
+.intro-grid{
+ position:absolute;inset:0;opacity:.13;
+ background-image:
+ linear-gradient(#e5c47722 1px,transparent 1px),
+ linear-gradient(90deg,#e5c47722 1px,transparent 1px);
+ background-size:55px 55px;
+ transform:perspective(450px) rotateX(62deg) scale(2);
+ transform-origin:center bottom;
+ mask-image:linear-gradient(to bottom,transparent,#000 55%,#000);
+}
+.intro-vignette{
+ position:absolute;inset:0;
+ background:radial-gradient(ellipse,transparent 25%,#0009 100%);
+ pointer-events:none;
+}
+.intro-stars{
+ position:absolute;inset:-20%;
+ background-image:
+ radial-gradient(#fff 1px,transparent 1.8px),
+ radial-gradient(#ffe7a1 1px,transparent 2px),
+ radial-gradient(#fff 1px,transparent 2px);
+ background-size:75px 75px,117px 117px,190px 190px;
+ background-position:0 0,30px 50px,90px 20px;
+ animation:starsMove 14s linear infinite;
+ opacity:.55;
+}
+.intro-light{
+ position:absolute;inset:-60%;
+ background:linear-gradient(110deg,transparent 43%,#fff0 47%,#fff4c566 49%,#fff 50%,#e5c47788 51%,transparent 56%);
+ transform:translateX(-100%) rotate(10deg);
+ animation:lightSweep 3s ease-in-out .6s forwards;
+ pointer-events:none;
+}
+.intro-glow{
+ position:absolute;width:340px;height:340px;
+ border-radius:50%;
+ background:#e5c47722;filter:blur(75px);
+ animation:glowPulse 2.5s ease-in-out infinite;
+}
+.intro-scene{
+ position:relative;z-index:2;
+ width:min(90vw,430px);
+ text-align:center;
+ transform-style:preserve-3d;
+ animation:sceneReveal 1.4s cubic-bezier(.2,.8,.2,1) both;
+}
+.emblem-stage{
+ width:245px;height:245px;margin:0 auto 20px;
+ position:relative;display:grid;place-items:center;
+ transform-style:preserve-3d;
+ animation:emblemFloat 4s ease-in-out infinite;
+}
+.orbit{
+ position:absolute;width:230px;height:230px;
+ border:2px solid #e5c47799;border-radius:50%;
+ box-shadow:0 0 18px #e5c47755,inset 0 0 18px #e5c47722;
+ transform:rotateX(72deg) rotateZ(0deg);
+ animation:orbitSpin 7s linear infinite;
+}
+.orbit.two{
+ width:205px;height:205px;
+ border-color:#fff0b877;
+ transform:rotateY(68deg) rotateX(20deg);
+ animation:orbitSpinTwo 9s linear infinite;
+}
+.orbit.three{
+ width:265px;height:265px;
+ border:1px dashed #e5c47766;
+ transform:rotateX(78deg);
+ animation:orbitSpin 16s linear infinite reverse;
+}
+.orbit-dot{
+ position:absolute;width:10px;height:10px;
+ background:var(--gold2);border-radius:50%;
+ box-shadow:0 0 18px 5px #e5c477;
+ top:10px;left:50%;
+}
+.emblem{
+ width:142px;height:142px;position:relative;
+ display:grid;place-items:center;
+ border-radius:35px;
+ background:linear-gradient(145deg,#fff0b8 0%,#d5a84f 22%,#8d6327 48%,#f3d98e 70%,#a4772e 100%);
+ border:2px solid #ffe9a4;
+ box-shadow:
+ 0 0 20px #e5c477aa,
+ 0 0 55px #e5c47766,
+ inset 0 4px 7px #fff9,
+ inset 0 -9px 14px #50330c99,
+ 12px 15px 24px #0009;
+ transform:rotateX(12deg) rotateY(-12deg) translateZ(35px);
+ animation:emblemTurn 7s ease-in-out infinite;
+}
+.emblem:before{
+ content:"";position:absolute;inset:9px;
+ border:1px solid #fff1b9;border-radius:27px;
+ box-shadow:inset 0 0 12px #fff7;
+}
+.emblem:after{
+ content:"";position:absolute;
+ width:70%;height:25%;top:7%;left:15%;
+ border-radius:50%;
+ background:linear-gradient(#fff9,transparent);
+ filter:blur(7px);
+}
+.emblem-text{
+ position:relative;z-index:2;
+ font-size:55px;font-weight:1000;letter-spacing:-5px;
+ color:#172033;
+ text-shadow:1px 2px 0 #fff2,2px 4px 0 #9c6b24,0 0 8px #fff8;
+}
+.crown{
+ position:absolute;z-index:5;
+ top:-35px;left:50%;transform:translateX(-50%) translateZ(55px);
+ font-size:43px;
+ color:var(--gold2);
+ filter:drop-shadow(0 0 9px #e5c477) drop-shadow(2px 4px 2px #000);
+ animation:crownFloat 2s ease-in-out infinite;
+}
+.intro-title{
+ margin:0;font-size:clamp(27px,7vw,39px);
+ letter-spacing:3px;font-weight:1000;
+ color:#fff3c7;
+ text-shadow:0 2px 0 #8b652b,0 4px 0 #543b1b,
+ 0 0 20px #e5c47799,0 0 45px #e5c47755;
+}
+.intro-title span{
+ background:linear-gradient(180deg,#fff7d9,#e5c477 45%,#a8792c);
+ color:transparent;background-clip:text;
+ -webkit-background-clip:text;
+}
+.intro-subtitle{
+ margin:10px 0 0;color:#e5c477;
+ font-size:11px;letter-spacing:5px;font-weight:bold;
+}
+.intro-line{
+ width:130px;height:2px;margin:17px auto;
+ background:linear-gradient(90deg,transparent,#fff0b8,transparent);
+ box-shadow:0 0 12px #e5c477;
+}
+.intro-footer{
+ position:absolute;bottom:24px;left:0;right:0;
+ text-align:center;color:#ffe2a0;
+ font-size:9px;letter-spacing:4px;z-index:4;
+}
+#hbSoundButton{
+ position:absolute;top:20px;right:15px;z-index:10;
+ border:1px solid #e5c47799;border-radius:30px;
+ background:#101a2bdd;color:#ffe6a6;
+ padding:11px 15px;font-size:10px;font-weight:bold;
+ box-shadow:0 0 15px #e5c47722;
+}
+#hbSkip{
+ position:absolute;top:22px;left:15px;z-index:10;
+ color:#d9c58f;background:transparent;
+ border:0;font-size:10px;letter-spacing:1px;
+}
+@keyframes sceneReveal{
+ from{opacity:0;transform:translateY(35px) scale(.8) rotateX(12deg)}
+ to{opacity:1;transform:translateY(0) scale(1) rotateX(0)}
+}
+@keyframes emblemFloat{
+ 0%,100%{transform:translateY(0) rotateY(-5deg)}
+ 50%{transform:translateY(-12px) rotateY(5deg)}
+}
+@keyframes emblemTurn{
+ 0%,100%{transform:rotateX(12deg) rotateY(-12deg) translateZ(35px)}
+ 50%{transform:rotateX(3deg) rotateY(12deg) translateZ(45px)}
+}
+@keyframes crownFloat{
+ 0%,100%{transform:translateX(-50%) translateY(0) translateZ(55px)}
+ 50%{transform:translateX(-50%) translateY(-7px) translateZ(65px)}
+}
+@keyframes orbitSpin{to{transform:rotateX(72deg) rotateZ(360deg)}}
+@keyframes orbitSpinTwo{to{transform:rotateY(68deg) rotateX(20deg) rotateZ(360deg)}}
+@keyframes starsMove{to{background-position:150px 300px,-120px 240px,220px -180px}}
+@keyframes lightSweep{to{transform:translateX(100%) rotate(10deg)}}
+@keyframes glowPulse{50%{opacity:.55;transform:scale(1.25)}}
+@keyframes introExit{to{opacity:0;visibility:hidden;pointer-events:none}}
+
+/* =========================
+   MAIN WEBSITE
+========================= */
+header{
+ padding:14px 15px;
+ background:linear-gradient(135deg,#101a2b,#263653);
+ border-bottom:1px solid var(--line);
+ position:sticky;top:0;z-index:10;
+}
+.headerrow{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{
+ width:44px;height:44px;border-radius:14px;
+ background:linear-gradient(145deg,#fff0b8,#d5a84f,#8d6327);
+ color:#101a2b;display:grid;place-items:center;
+ font-size:23px;font-weight:900;
+ box-shadow:0 0 15px #e5c47755,inset 0 2px 4px #fff9;
+}
+.brandname{font-size:19px;letter-spacing:1px;font-weight:900;color:var(--gold)}
+.tagline{font-size:9px;letter-spacing:2px;color:#d8deea;margin-top:4px}
+.status{font-size:10px;color:var(--green);border:1px solid #416b5c;padding:6px 8px;border-radius:20px;white-space:nowrap}
+
+/* TOP NAVIGATION */
+.topnav{
+ position:sticky;top:72px;z-index:9;
+ display:flex;gap:5px;overflow-x:auto;white-space:nowrap;
+ background:#101a2b;border-bottom:1px solid var(--line);
+ padding:9px 8px;scrollbar-width:none;
+}
+.topnav::-webkit-scrollbar{display:none}
+.topnav button{
+ flex:0 0 auto;background:transparent;border:1px solid transparent;
+ color:var(--muted);border-radius:9px;padding:10px 12px;
+ font-size:11px;font-weight:bold;
+}
+.topnav button.active{color:var(--gold);background:#263653;border-color:#75633d}
+.more-wrap{position:relative;flex:0 0 auto}
+.more-menu{
+ display:none;position:fixed;top:132px;right:12px;width:220px;
+ z-index:30;background:#19263b;border:1px solid #75633d;
+ border-radius:13px;padding:8px;box-shadow:0 12px 30px #0009;
+}
+.more-menu.open{display:block}
+.more-menu button{
+ display:block;width:100%;text-align:left;padding:12px;
+ border-radius:8px;color:var(--ivory);border:0;
+ background:transparent;font-size:12px;
+}
+.more-menu button:hover{background:#30405a;color:var(--gold)}
+
+main{max-width:1050px;margin:auto;padding:17px 14px 30px}
+.hero{
+ padding:22px;border:1px solid #5c513b;border-radius:20px;
+ background:linear-gradient(130deg,#1d2c43,#101a2b);margin-bottom:18px;
+}
+.hero h1{font-size:25px;margin:0 0 8px;color:var(--gold)}
+.hero p{color:var(--muted);line-height:1.5;font-size:13px;margin:0}
+.section{display:none}
+.section.active{display:block}
+.hidden{display:none!important}
+h2{font-size:20px;margin:8px 0 14px}
+h3{font-size:15px;margin:0 0 9px;color:var(--gold)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px}
+.metric{font-size:24px;font-weight:800;color:var(--gold);margin:9px 0 4px}
+.small{font-size:12px;color:var(--muted);line-height:1.5}
+.tile{
+ min-height:112px;text-align:left;color:var(--ivory);
+ background:var(--panel);border:1px solid var(--line);
+ border-radius:15px;padding:14px;
+}
+.tile b{display:block;margin:9px 0 5px}
+.tile span{font-size:23px}
+label{display:block;font-size:12px;color:var(--muted);margin:12px 0 6px}
+input,select,textarea{
+ width:100%;padding:12px;border-radius:10px;
+ border:1px solid var(--line);background:#101a2b;
+ color:white;outline:none;
+}
+textarea{min-height:85px;resize:vertical}
+.btn{
+ border:0;border-radius:10px;padding:12px 15px;
+ background:var(--gold);color:#172033;font-weight:800;margin-top:12px;
+}
+.btn.secondary{background:#2b3d58;color:white;border:1px solid #50617b}
+.btn.full{width:100%}
+.row{display:flex;gap:9px;flex-wrap:wrap}
+.row>*{flex:1;min-width:120px}
+.pill{display:inline-block;border:1px solid #75633d;color:var(--gold);padding:5px 9px;border-radius:20px;font-size:10px;margin:3px}
+.notice{border-left:3px solid var(--gold);padding:10px 12px;background:#202e43;border-radius:7px;color:var(--muted);font-size:12px;line-height:1.5}
+.result{white-space:pre-wrap;background:#101a2b;border:1px solid var(--line);padding:12px;border-radius:10px;font-size:13px;line-height:1.5;margin-top:10px}
+.preview{background:white;color:#172033;border-radius:12px;padding:18px;min-height:150px;margin-top:12px}
+.preview h2{color:#172033}
+.item{padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+.auth-status{font-size:12px;color:var(--green);line-height:1.5;margin-top:10px}
+footer{text-align:center;color:#7e8ca2;font-size:10px;padding:25px 0}
+@media(max-width:420px){
+ .brandname{font-size:16px}
+ .tagline{font-size:8px;letter-spacing:1px}
+ .status{font-size:9px;padding:5px 6px}
+ .hero{padding:17px}
+ .hero h1{font-size:22px}
+ .topnav button{padding:9px 10px;font-size:10px}
+}
+@media(min-width:700px){
+ .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ main{padding-top:24px}
+ .hero h1{font-size:32px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{animation-duration:.01ms!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+
+<body>
+
+<!-- CINEMATIC WELCOME -->
+<div id="hbCinematic">
+ <div class="intro-grid"></div>
+ <div class="intro-stars"></div>
+ <div class="intro-glow"></div>
+
+ <button id="hbSkip" type="button">SKIP INTRO ↗</button>
+ <button id="hbSoundButton" type="button">♫ ENABLE SOUND</button>
+
+ <div class="intro-scene">
+  <div class="emblem-stage">
+   <div class="orbit"><div class="orbit-dot"></div></div>
+   <div class="orbit two"></div>
+   <div class="orbit three"></div>
+   <div class="crown">♛</div>
+   <div class="emblem"><div class="emblem-text">HB</div></div>
+  </div>
+
+  <h1 class="intro-title">HIGHBEE <span>BOOST</span></h1>
+  <div class="intro-line"></div>
+  <p class="intro-subtitle">THE POWER TO GROW</p>
+ </div>
+
+ <div class="intro-light"></div>
+ <div class="intro-vignette"></div>
+ <div class="intro-footer">POWERING YOUR DIGITAL FUTURE</div>
+</div>
+
+<header>
+ <div class="headerrow">
+  <div class="brand">
+   <div class="logo">HB</div>
+   <div>
+    <div class="brandname">HIGHBEE BOOST</div>
+    <div class="tagline">CREATE. PROMOTE. GROW.</div>
+   </div>
+  </div>
+  <div class="status">● DIGITAL HUB</div>
+ </div>
+</header>
+
+<!-- TOP NAVIGATION -->
+<nav class="topnav">
+ <button class="active" data-page="home" onclick="show('home',this)">⌂ Home</button>
+ <button data-page="account" onclick="show('account',this)">👤 Account</button>
+ <button data-page="growth" onclick="show('growth',this)">📈 Growth</button>
+ <button data-page="website" onclick="show('website',this)">🌐 Websites</button>
+ <button data-page="ads" onclick="show('ads',this)">📣 Advertising</button>
+ <button data-page="content" onclick="show('content',this)">✍️ Content</button>
+ <button data-page="campaigns" onclick="show('campaigns',this)">🎯 Campaigns</button>
+ <button data-page="membership" onclick="show('membership',this)">👑 Plans</button>
+ <div class="more-wrap">
+  <button type="button" onclick="toggleMore()">☰ More</button>
+ </div>
+</nav>
+
+<div class="more-menu" id="moreMenu">
+ <button onclick="show('settings')">⚙️ Settings</button>
+ <button onclick="show('profile')">👤 My Profile</button>
+ <button onclick="show('notifications')">🔔 Notifications</button>
+ <button onclick="show('support')">💬 Help & Support</button>
+ <button onclick="show('privacy')">🔒 Privacy & Security</button>
+ <button onclick="show('discovery')">🤝 Creator Discovery</button>
+ <button id="adminMenuButton" style="display:none" onclick="show('admin')">🛡️ Admin Dashboard</button>
+</div>
+
+<main>
+ <div class="hero">
+  <h1>Build your digital future.</h1>
+  <p>One platform to plan campaigns, promote your brand, create websites and grow your online presence.</p>
+ </div>
+
+<!-- HOME -->
+<section id="home" class="section active">
+ <h2>Welcome to HIGHBEE BOOST</h2>
+ <div class="grid">
+  <button class="tile" onclick="show('growth')"><span>📈</span><b>Social Growth</b><small class="small">Followers, likes, comments and views</small></button>
+  <button class="tile" onclick="show('website')"><span>🌐</span><b>Website Builder</b><small class="small">Design and download a website</small></button>
+  <button class="tile" onclick="show('ads')"><span>📣</span><b>Advertising Centre</b><small class="small">Plan and manage adverts</small></button>
+  <button class="tile" onclick="show('content')"><span>✍️</span><b>Content Studio</b><small class="small">Captions and hashtags</small></button>
+  <button class="tile" onclick="show('campaigns')"><span>🎯</span><b>Campaign Manager</b><small class="small">Save your campaign plans</small></button>
+  <button class="tile" onclick="show('membership')"><span>👑</span><b>Membership</b><small class="small">Explore membership options</small></button>
+ </div>
+ <div class="card">
+  <h3>Your workspace</h3>
+  <div class="grid">
+   <div><div class="metric" id="campaignCount">0</div><div class="small">Saved campaigns</div></div>
+   <div><div class="metric">4</div><div class="small">Social platforms</div></div>
+  </div>
+ </div>
+ <div class="notice">Campaigns can be saved to your account when you log in. Some tools also keep local copies on this device.</div>
+</section>
+
+<!-- ACCOUNT -->
+<section id="account" class="section">
+ <h2>My Account</h2>
+ <div class="card">
+  <h3>Create your HIGHBEE BOOST account</h3>
+  <label>Your full name</label>
+  <input id="authName" placeholder="Enter your full name">
+  <label>Email address</label>
+  <input id="authEmail" type="email" placeholder="Enter your email">
+  <label>Password</label>
+  <input id="authPassword" type="password" placeholder="At least 6 characters">
+  <button class="btn full" onclick="signUp()">Create account</button>
+  <button class="btn secondary full" onclick="signIn()">Log in</button>
+  <button class="btn secondary full" onclick="resetPassword()">Forgot password / reset password</button>
+  <button class="btn secondary full" onclick="signOut()">Log out</button>
+  <p class="auth-status" id="authStatus">You are not logged in.</p>
+ </div>
+ <div class="notice">When you register, Supabase may send a confirmation email. Open that email and confirm your address before logging in. If you forget your password, enter your email above and use the password reset button.</div>
+</section>
+
+<!-- PROFILE -->
+<section id="profile" class="section">
+ <h2>My Profile</h2>
+ <div class="card">
+  <h3>Account information</h3>
+  <p class="small">Sign in to view and update your HIGHBEE BOOST profile.</p>
+  <label>Full name</label>
+  <input id="profileName" placeholder="Your full name">
+  <label>Email address</label>
+  <input id="profileEmail" type="email" disabled>
+  <button class="btn full" onclick="saveProfile()">Save profile</button>
+  <p class="auth-status" id="profileStatus"></p>
+ </div>
+ <div class="card">
+  <h3>Change password</h3>
+  <label>New password</label>
+  <input id="newPassword" type="password" minlength="6" placeholder="At least 6 characters">
+  <button class="btn full" onclick="changePassword()">Update password</button>
+  <p class="small">If you have forgotten your password, use the reset option on the Account page.</p>
+ </div>
+</section>
+
+<!-- GROWTH -->
+<section id="growth" class="section">
+ <h2>Social Growth</h2>
+ <p class="small">Plan genuine audience growth and track your own results.</p>
+ <div class="grid">
+  <div class="card"><h3>👥 Followers</h3><p class="small">Reach people who may enjoy your content.</p></div>
+  <div class="card"><h3>❤️ Likes</h3><p class="small">Encourage real viewers to engage.</p></div>
+  <div class="card"><h3>💬 Comments</h3><p class="small">Invite authentic feedback.</p></div>
+  <div class="card"><h3>▶️ Views</h3><p class="small">Promote content to relevant audiences.</p></div>
+ </div>
+ <div class="card">
+  <h3>Growth campaign planner</h3>
+  <label>Platform</label>
+  <select id="growthPlatform"><option>TikTok</option><option>Instagram</option><option>Facebook</option><option>YouTube</option></select>
+  <label>What do you want to grow?</label>
+  <select id="growthGoal"><option>Followers</option><option>Likes</option><option>Comments</option><option>Views</option><option>All four goals</option></select>
+  <label>Post or profile link</label>
+  <input id="growthLink" placeholder="https://...">
+  <label>Campaign notes</label>
+  <textarea id="growthNotes" placeholder="Describe your audience and content"></textarea>
+  <button class="btn full" onclick="saveSimpleCampaign('growth')">Save growth plan</button>
+ </div>
+ <div class="card">
+  <h3>My results tracker</h3>
+  <div class="grid">
+   <div><label>Followers</label><input id="followers" type="number" min="0" placeholder="0"></div>
+   <div><label>Likes</label><input id="likes" type="number" min="0" placeholder="0"></div>
+   <div><label>Comments</label><input id="comments" type="number" min="0" placeholder="0"></div>
+   <div><label>Views</label><input id="views" type="number" min="0" placeholder="0"></div>
+  </div>
+  <button class="btn full" onclick="saveMetrics()">Save my figures</button>
+  <p class="small" id="metricsStatus"></p>
+ </div>
+ <div class="notice">HIGHBEE BOOST does not generate fake followers, bot likes or automated comments.</div>
+</section>
+
+<!-- CREATOR DISCOVERY -->
+<section id="discovery" class="section">
+ <h2>🤝 Creator Discovery</h2>
+ <p class="small">Create a creator card, discover profiles saved on this device, and share your profile link with people you want to collaborate with.</p>
+ <div class="notice"><b>Prototype notice:</b> Creator cards are currently saved only in this browser on this device. Other visitors cannot see them yet. A shared online creator directory needs a secure database table and access rules before launch.</div>
+ <div class="card">
+  <h3>List your creator profile</h3>
+  <label>Display name</label>
+  <input id="creatorName" maxlength="60" placeholder="Your creator or brand name">
+  <label>Platform</label>
+  <select id="creatorPlatform"><option>TikTok</option><option>Instagram</option><option>YouTube</option><option>Facebook</option></select>
+  <label>Category</label>
+  <select id="creatorCategory"><option>Music & Entertainment</option><option>Education</option><option>Fashion & Beauty</option><option>Business</option><option>Comedy</option><option>Faith & Inspiration</option><option>Lifestyle</option><option>Other</option></select>
+  <label>Profile URL</label>
+  <input id="creatorUrl" type="url" placeholder="https://...">
+  <label>Short introduction</label>
+  <textarea id="creatorBio" maxlength="240" placeholder="What do you create? Who would enjoy your content?"></textarea>
+  <button class="btn full" onclick="saveCreatorProfile()">Save creator card</button>
+  <p id="creatorStatus" class="small" aria-live="polite"></p>
+ </div>
+ <div class="card">
+  <h3>Discover creators</h3>
+  <label>Search by name or category</label>
+  <input id="creatorSearch" placeholder="Search creators..." oninput="renderCreatorCards()">
+  <div id="creatorCards" aria-live="polite"><p class="small">No creator cards saved on this device yet.</p></div>
+ </div>
+ <div class="notice">Use public profile links only. HIGHBEE BOOST does not promise followers, likes or views, and does not automate engagement.</div>
+</section>
+
+<!-- WEBSITE BUILDER -->
+<section id="website" class="section">
+ <h2>Website Builder</h2>
+ <p class="small">Create a simple personal or business website.</p>
+ <div class="card">
+  <h3>Build your website</h3>
+  <label>Website type</label>
+  <select id="siteType"><option>Business website</option><option>Personal portfolio</option><option>Creator page</option><option>Online product showcase</option></select>
+  <label>Website or business name</label>
+  <input id="siteName" placeholder="My Business">
+  <label>Short headline</label>
+  <input id="siteHeadline" placeholder="Welcome to my website">
+  <label>About</label>
+  <textarea id="siteAbout" placeholder="Tell visitors what you do"></textarea>
+  <label>Products or services</label>
+  <textarea id="siteServices" placeholder="List your products or services"></textarea>
+  <label>Contact email or phone</label>
+  <input id="siteContact" placeholder="Your contact details">
+  <button class="btn full" onclick="previewSite()">Preview my website</button>
+  <button class="btn secondary full" onclick="downloadSite()">Download website HTML</button>
+  <div id="sitePreview" class="preview"><h2>Your preview will appear here</h2></div>
+ </div>
+ <div class="notice">To publish your created website with a public link, upload its downloaded file to a hosting service.</div>
+</section>
+
+<!-- ADVERTISING -->
+<section id="ads" class="section">
+ <h2>Advertising Centre</h2>
+ <div class="card">
+  <h3>Create an advert plan</h3>
+  <label>Advertising platform</label>
+  <select id="adPlatform"><option>Facebook / Instagram</option><option>TikTok</option><option>YouTube</option><option>Multiple platforms</option></select>
+  <label>What are you advertising?</label>
+  <input id="adProduct" placeholder="Product, service or business">
+  <label>Campaign objective</label>
+  <select id="adGoal"><option>Brand awareness</option><option>Website visits</option><option>Messages and enquiries</option><option>Product sales</option><option>Video views</option></select>
+  <label>Target audience</label>
+  <input id="adAudience" placeholder="Describe your audience">
+  <div class="row">
+   <div><label>Budget (₦)</label><input id="adBudget" type="number" min="0" placeholder="5000"></div>
+   <div><label>Duration (days)</label><input id="adDays" type="number" min="1" placeholder="7"></div>
+  </div>
+  <label>Advert text</label>
+  <textarea id="adCopy" placeholder="Write your advert message"></textarea>
+  <button class="btn full" onclick="saveSimpleCampaign('ad')">Save advertising plan</button>
+ </div>
+ <div class="card">
+  <h3>Advertising performance</h3>
+  <div class="grid">
+   <div><label>Reach</label><input id="adReach" type="number" placeholder="0"></div>
+   <div><label>Clicks</label><input id="adClicks" type="number" placeholder="0"></div>
+   <div><label>Enquiries</label><input id="adLeads" type="number" placeholder="0"></div>
+  </div>
+  <button class="btn full" onclick="saveAdResults()">Save advert results</button>
+  <p class="small" id="adResultStatus"></p>
+ </div>
+ <div class="card" id="globalAds">
+  <span class="pill">GLOBAL ADS · NEW</span>
+  <h3>Distribute adverts across supported platforms</h3>
+  <p class="small">Prepare one campaign for multiple advertising networks. HIGHBEE BOOST will manage the campaign details here; publishing requires each network's approved advertising account, permissions and budget.</p>
+  <label>Campaign / business name</label>
+  <input id="globalAdName" placeholder="e.g. My fashion brand">
+  <label>Choose advertising networks</label>
+  <div class="grid">
+   <label><input type="checkbox" class="global-network" value="Meta (Facebook / Instagram)"> Meta (Facebook / Instagram)</label>
+   <label><input type="checkbox" class="global-network" value="TikTok Ads"> TikTok Ads</label>
+   <label><input type="checkbox" class="global-network" value="Google Ads / YouTube"> Google Ads / YouTube</label>
+   <label><input type="checkbox" class="global-network" value="Other approved websites"> Other approved websites</label>
+  </div>
+  <label>Target country or countries</label>
+  <input id="globalAdCountries" placeholder="e.g. Nigeria, Ghana, United Kingdom">
+  <label>Audience</label>
+  <input id="globalAdAudience" placeholder="Who should see this advert?">
+  <label>Campaign objective</label>
+  <select id="globalAdGoal"><option>Brand awareness</option><option>Website visits</option><option>Messages and enquiries</option><option>Product sales</option><option>Video views</option></select>
+  <label>Advert destination link (optional)</label>
+  <input id="globalAdLink" type="url" placeholder="https://...">
+  <label>Campaign budget (₦)</label>
+  <input id="globalAdBudget" type="number" min="0" placeholder="Enter your total advertising budget">
+  <label>Campaign duration (days)</label>
+  <input id="globalAdDays" type="number" min="1" placeholder="e.g. 7">
+  <button class="btn full" onclick="saveGlobalAdCampaign()">Save global advertising campaign</button>
+  <p class="small" id="globalAdStatus" aria-live="polite"></p>
+ </div>
+ <div class="notice">Important: Saving a campaign here does not launch ads or charge your card. Ads can only be sent to networks after their official integrations and advertiser permissions are connected. No platform placement or results are guaranteed.</div>
+</section>
+
+<!-- CONTENT STUDIO -->
+<section id="content" class="section">
+ <h2>Content Studio</h2>
+ <div class="card">
+  <h3>Caption helper</h3>
+  <label>What is your post about?</label>
+  <input id="captionTopic" placeholder="e.g. new product launch">
+  <label>Choose a style</label>
+  <select id="captionStyle"><option>Professional</option><option>Friendly</option><option>Exciting</option><option>Inspirational</option></select>
+  <button class="btn full" onclick="makeCaption()">Create caption idea</button>
+  <div id="captionResult" class="result">Your caption will appear here.</div>
+  <button class="btn secondary full" onclick="copyText('captionResult')">Copy caption</button>
+ </div>
+ <div class="card">
+  <h3>Hashtag helper</h3>
+  <label>Enter your topic</label>
+  <input id="hashTopic" placeholder="e.g. fashion, food, education">
+  <button class="btn full" onclick="makeHashtags()">Suggest hashtags</button>
+  <div id="hashResult" class="result">Your hashtags will appear here.</div>
+  <button class="btn secondary full" onclick="copyText('hashResult')">Copy hashtags</button>
+ </div>
+ <div class="card">
+  <h3>Content planner</h3>
+  <label>Content idea</label>
+  <input id="planIdea" placeholder="What will you post?">
+  <label>Platform</label>
+  <select id="planPlatform"><option>TikTok</option><option>Instagram</option><option>Facebook</option><option>YouTube</option></select>
+  <label>Planned date</label>
+  <input id="planDate" type="date">
+  <button class="btn full" onclick="saveSimpleCampaign('plan')">Save content plan</button>
+ </div>
+ <p class="small">These built-in writing helpers do not require an AI API connection.</p>
+</section>
+
+<!-- CAMPAIGN MANAGER -->
+<section id="campaigns" class="section">
+ <h2>Campaign Manager</h2>
+ <div class="card">
+  <h3>My saved plans</h3>
+  <div id="campaignList" class="small">No campaigns saved yet.</div>
+  <button class="btn secondary full" onclick="renderCampaigns()">Refresh campaign list</button>
+  <button class="btn secondary full" onclick="loadCloudCampaigns()">Load my online campaigns</button>
+ </div>
+ <div class="notice">When logged in, campaign plans are saved to your Supabase account. Without login, they are saved on this device.</div>
+</section>
+
+<!-- MEMBERSHIP -->
+<section id="membership" class="section">
+ <h2>Membership</h2>
+ <div class="card">
+  <span class="pill">FIRST-TIME TRIAL</span>
+  <h3>12-hour trial</h3>
+  <div class="metric">12 Hours</div>
+  <p class="small" id="trialStatus">Sign in, then start your one-time 12-hour trial.</p>
+  <button class="btn full" id="startTrialButton" onclick="startMyTrial()">Start my 12-hour trial</button>
+ </div>
+ <div class="grid">
+  <div class="card"><h3>Pro Monthly</h3><div class="metric">₦1,500</div><p class="small">Proposed monthly price</p><button class="btn full" onclick="startMembershipPayment('pro-monthly')">Choose plan</button></div>
+  <div class="card"><h3>Pro Lifetime</h3><div class="metric">₦10,000</div><p class="small">Proposed price</p><button class="btn full" onclick="startMembershipPayment('pro-lifetime')">Choose plan</button></div>
+  <div class="card"><h3>Business Monthly</h3><div class="metric">₦3,000</div><p class="small">Proposed monthly price</p><button class="btn full" onclick="startMembershipPayment('business-monthly')">Choose plan</button></div>
+  <div class="card"><h3>Business Lifetime</h3><div class="metric">₦20,000</div><p class="small">Proposed price</p><button class="btn full" onclick="startMembershipPayment('business-lifetime')">Choose plan</button></div>
+ </div>
+ <div class="card">
+  <h3>Payment currency</h3>
+  <select id="currency"><option value="NGN">Naira (NGN)</option><option value="USD">US Dollar (USD) – availability to be confirmed</option></select>
+  <p class="small" id="membershipStatus">Prices are proposed. Checkout is not active.</p>
+ </div>
+ <div class="notice">Payment processing is not connected. Do not collect customer payments until secure checkout and server-side payment verification are set up.</div>
+</section>
+
+<!-- SETTINGS -->
+<section id="settings" class="section">
+ <h2>Settings</h2>
+ <div class="card">
+  <h3>HIGHBEE BOOST</h3>
+  <p class="small">CREATE. PROMOTE. GROW.</p>
+  <p class="small">Premium digital tools for creators, entrepreneurs and businesses.</p>
+  <button class="btn secondary full" onclick="clearLocalData()">Clear saved data on this device</button>
+  <p class="small">This removes local campaign plans and tracker figures from this browser only.</p>
+ </div>
+</section>
+
+<!-- NOTIFICATIONS -->
+<section id="notifications" class="section">
+ <h2>Notifications</h2>
+ <div class="card"><h3>Your updates</h3><div id="notificationList" class="small">You are all caught up. Important account and campaign updates will appear here when notification services are connected.</div></div>
+ <div class="notice">Browser notifications and email alerts require permission and a configured notification service. This page does not claim to send alerts yet.</div>
+</section>
+
+<!-- SUPPORT -->
+<section id="support" class="section">
+ <h2>Help & Support</h2>
+ <div class="card"><h3>How can we help?</h3><p class="small">For account access, campaign saving, advertising setup or website publishing, describe the issue below.</p>
+  <label>Subject</label><input id="supportSubject" placeholder="What do you need help with?">
+  <label>Message</label><textarea id="supportMessage" placeholder="Explain what happened..."></textarea>
+  <button class="btn full" onclick="createSupportDraft()">Prepare support message</button><p id="supportStatus" class="small" aria-live="polite"></p>
+ </div>
+ <div class="notice">This prepares a message on your device. A staffed support inbox or ticket system must be connected before messages can be submitted to HIGHBEE BOOST.</div>
+</section>
+
+<!-- PRIVACY -->
+<section id="privacy" class="section">
+ <h2>Privacy & Security</h2>
+ <div class="card"><h3>Account safety</h3><ul><li>Use a unique password and keep it private.</li><li>Sign out on shared devices.</li><li>Only submit links and campaign material you have permission to use.</li><li>Never paste secret API keys into the website.</li></ul></div>
+ <div class="card"><h3>Data and permissions</h3><p class="small">HIGHBEE BOOST uses Supabase authentication and may store account and campaign data when configured. Before public launch, publish a reviewed privacy notice naming the operator, data collected, purposes, retention, contact channel and applicable user rights.</p></div>
+ <div class="notice">This is a launch checklist, not a legally reviewed privacy policy. Do not represent it as legal advice or a final compliance document.</div>
+</section>
+
+<!-- ADMIN DASHBOARD: access is checked by protected Supabase RPCs -->
+<section id="admin" class="section">
+ <h2>🛡️ Admin Dashboard</h2>
+ <p class="small">Restricted to approved HIGHBEE BOOST administrators.</p>
+ <div class="notice" id="adminAccessNotice">Checking your administrator access…</div>
+ <div id="adminDashboardContent" style="display:none">
+  <div class="grid">
+   <div class="card"><h3>Registered users</h3><div class="metric" id="adminUsersCount">—</div></div>
+   <div class="card"><h3>Campaigns</h3><div class="metric" id="adminCampaignsCount">—</div></div>
+  </div>
+  <div class="card">
+   <div class="row" style="align-items:center;justify-content:space-between">
+    <h3>Registered users</h3>
+    <button class="btn secondary" style="margin-top:0" onclick="loadAdminDashboard()">Refresh dashboard</button>
+   </div>
+   <div class="row" style="margin:12px 0">
+    <input id="adminSearch" placeholder="Search user email" aria-label="Search user email">
+    <button class="btn" style="margin-top:0" onclick="loadAdminUsers()">Search</button>
+   </div>
+   <p id="adminMessage" class="small" aria-live="polite"></p>
+   <div style="overflow-x:auto">
+    <table style="width:100%;min-width:680px;border-collapse:collapse;font-size:12px">
+     <thead><tr><th style="text-align:left;padding:9px;border-bottom:1px solid var(--line)">Email</th><th style="text-align:left;padding:9px;border-bottom:1px solid var(--line)">Joined</th><th style="text-align:left;padding:9px;border-bottom:1px solid var(--line)">Last sign in</th><th style="text-align:left;padding:9px;border-bottom:1px solid var(--line)">Status</th><th style="text-align:left;padding:9px;border-bottom:1px solid var(--line)">Action</th></tr></thead>
+     <tbody id="adminUserRows"><tr><td colspan="5" style="padding:10px">Administrator access is being checked.</td></tr></tbody>
+    </table>
+   </div>
+  </div>
+  <div class="notice">Payment and subscription records will appear here after secure payment tables and Paystack verification are configured. Never mark a payment successful manually.</div>
+ </div>
+</section>
+
+<footer>HIGHBEE BOOST © 2026 · CREATE. PROMOTE. GROW.</footer>
+</main>
+
+<script>
+/* SUPABASE CONFIGURATION */
+const HB_SUPABASE_URL="https://lcerukiguqnajiawjcnn.supabase.co";
+const HB_SUPABASE_KEY = "sb_publishable_k51827ND3pHRowgDeGc8lQ_p2tZVX9-";
+let hbSupabase=null;
+let currentUser=null;
+let hbTrialTimer=null;
+
+try{
+ if(window.supabase&&window.supabase.createClient){
+  hbSupabase=window.supabase.createClient(HB_SUPABASE_URL,HB_SUPABASE_KEY);
+ }
+}catch(error){console.error("Supabase setup error:",error)}
+
+const STORE="hb_campaigns_v2";
+
+function el(id){return document.getElementById(id)}
+function value(id){return el(id)?.value||""}
+
+/* NAVIGATION */
+function show(page,btn){
+ document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+ const target=el(page);
+ if(target)target.classList.add("active");
+
+ document.querySelectorAll(".topnav button[data-page]").forEach(b=>b.classList.remove("active"));
+ const active=btn||document.querySelector('.topnav button[data-page="'+page+'"]');
+ if(active)active.classList.add("active");
+
+ const menu=el("moreMenu");
+ if(menu)menu.classList.remove("open");
+
+ if(page==="campaigns")renderCampaigns();
+ if(page==="discovery")renderCreatorCards();
+ if(page==="admin")loadAdminDashboard();
+ window.scrollTo(0,0);
+}
+
+function toggleMore(){
+ const menu=el("moreMenu");
+ if(menu)menu.classList.toggle("open");
+}
+function moreComingSoon(feature){
+ toggleMore();
+ alert(feature+" is coming soon to HIGHBEE BOOST.");
+}
+
+function createSupportDraft(){
+ const subject=value("supportSubject").trim();
+ const message=value("supportMessage").trim();
+ const status=el("supportStatus");
+ if(!subject||!message){status.textContent="Please enter both a subject and a message.";return;}
+ const draft="HIGHBEE BOOST SUPPORT\nSubject: "+subject+"\n\n"+message;
+ if(navigator.clipboard?.writeText){navigator.clipboard.writeText(draft).then(()=>status.textContent="Support message copied. You can paste it into your support channel.").catch(()=>status.textContent=draft);}
+ else status.textContent=draft;
+}
+
+/* LOCAL CAMPAIGNS */
+function getCampaigns(){
+ try{return JSON.parse(localStorage.getItem(STORE)||"[]")}
+ catch(error){return []}
+}
+function saveLocalCampaign(item){
+ const list=getCampaigns();
+ list.unshift({...item,id:Date.now(),savedAt:new Date().toLocaleString()});
+ localStorage.setItem(STORE,JSON.stringify(list));
+ updateCount();
+ renderCampaigns();
+}
+
+async function saveCampaign(item){
+ if(currentUser&&hbSupabase){
+  const row={
+   user_id:currentUser.id,
+   name:String(item.product||item.idea||item.goal||item.type||"Campaign"),
+   platform:String(item.platform||"Other"),
+   method:String(item.type||"Campaign"),
+   content_url:item.link||null,
+   goal:String(item.goal||item.type||"Campaign"),
+   audience:item.audience||null,
+   budget:Number(item.budget||0)
+  };
+  const {error}=await hbSupabase.from("campaigns").insert(row);
+  if(!error){
+   alert("Your campaign has been saved to your HIGHBEE BOOST account!");
+   await loadCloudCampaigns();
+   return;
+  }
+  console.error("Cloud save error:",error);
+  alert("Online saving failed. Your plan will be saved on this device instead. Error: "+error.message);
+ }else{
+  alert("You are not logged in. Your plan will be saved on this device.");
+ }
+ saveLocalCampaign(item);
+}
+
+function saveGlobalAdCampaign(){
+ const networks=[...document.querySelectorAll(".global-network:checked")].map(x=>x.value);
+ const name=value("globalAdName").trim();
+ const countries=value("globalAdCountries").trim();
+ const budget=Number(value("globalAdBudget")||0);
+ if(!name||!networks.length||!countries||budget<=0){
+  el("globalAdStatus").textContent="Enter a campaign name, choose at least one network and target country, and add a budget greater than zero.";
+  return;
+ }
+ const item={type:"global_ad_campaign",product:name,platform:networks.join(", "),goal:value("globalAdGoal"),audience:value("globalAdAudience"),countries,link:value("globalAdLink"),budget,days:value("globalAdDays"),status:"Draft — not published"};
+ saveCampaign(item);
+ el("globalAdStatus").textContent="Campaign draft saved. It has not been submitted to any advertising network.";
+}
+
+function saveSimpleCampaign(type){
+ let item={type};
+ if(type==="growth"){
+  item={...item,platform:value("growthPlatform"),goal:value("growthGoal"),link:value("growthLink"),notes:value("growthNotes")};
+ }
+ if(type==="ad"){
+  item={...item,platform:value("adPlatform"),product:value("adProduct"),goal:value("adGoal"),audience:value("adAudience"),budget:value("adBudget"),days:value("adDays"),copy:value("adCopy")};
+ }
+ if(type==="plan"){
+  item={...item,idea:value("planIdea"),platform:value("planPlatform"),date:value("planDate")};
+ }
+ saveCampaign(item);
+}
+
+function esc(v){
+ return String(v||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function renderCampaigns(){
+ const list=getCampaigns();
+ const box=el("campaignList");
+ if(!list.length){
+  box.textContent="No locally saved campaigns yet. Log in and save a plan to your account.";
+  return;
+ }
+ box.innerHTML=list.map((c,i)=>
+  '<div class="item"><b>'+(i+1)+'. '+esc(c.product||c.idea||c.goal||c.type)+'</b><br>'+esc(c.platform||"")+' · '+esc(c.savedAt||"")+'</div>'
+ ).join("");
+}
+function updateCount(){
+ const count=el("campaignCount");
+ if(count)count.textContent=getCampaigns().length;
+}
+
+/* ACCOUNT CREATION */
+async function signUp(){
+ if(!hbSupabase){
+  el("authStatus").textContent="Supabase could not load. Check your internet connection and reload.";
+  return;
+ }
+ const name=value("authName").trim();
+ const email=value("authEmail").trim();
+ const password=value("authPassword");
+ if(!name||!email||password.length<6){
+  el("authStatus").textContent="Enter your name, a valid email and a password of at least 6 characters.";
+  return;
+ }
+ el("authStatus").textContent="Creating your account...";
+ const {data,error}=await hbSupabase.auth.signUp({
+  email,password,options:{data:{full_name:name}}
+ });
+ if(error){
+  el("authStatus").textContent="Account creation failed: "+error.message;
+  return;
+ }
+ if(data.session){
+  currentUser=data.user;
+  updateAuthStatus();
+  await refreshAdminAccess();
+ }else{
+  el("authStatus").textContent="Account created! Check your email and click the confirmation link before logging in.";
+ }
+}
+
+/* LOGIN */
+async function signIn(){
+ if(!hbSupabase){
+  el("authStatus").textContent="Supabase is unavailable. Check your internet connection.";
+  return;
+ }
+ const email=value("authEmail").trim();
+ const password=value("authPassword");
+ if(!email||!password){
+  el("authStatus").textContent="Enter your email and password.";
+  return;
+ }
+ el("authStatus").textContent="Logging in...";
+ const {data,error}=await hbSupabase.auth.signInWithPassword({email,password});
+ if(error){
+  el("authStatus").textContent="Login failed: "+error.message;
+  return;
+ }
+ currentUser=data.user;
+ updateAuthStatus();
+ await loadCloudCampaigns();
+ await loadMyTrialStatus();
+ await refreshAdminAccess();
+}
+
+/* LOGOUT */
+async function signOut(){
+ if(!hbSupabase)return;
+ const {error}=await hbSupabase.auth.signOut();
+ if(error){
+  el("authStatus").textContent="Logout error: "+error.message;
+  return;
+ }
+ currentUser=null;
+ updateAuthStatus();
+ resetAdminDashboard();
+ el("authStatus").textContent="You have logged out.";
+}
+function updateAuthStatus(){
+ if(!el("authStatus"))return;
+ if(currentUser){
+  el("authStatus").textContent="Logged in as "+currentUser.email+". Your online campaigns are linked to your account.";
+ }else{
+  el("authStatus").textContent="You are not logged in.";
+ }
+}
+
+/* PROFILE AND PASSWORD MANAGEMENT */
+function renderProfile(){
+ if(!currentUser){
+  el("profileStatus").textContent="Please log in from the Account page to manage your profile.";
+  el("profileName").value="";
+  el("profileEmail").value="";
+  return;
+ }
+ el("profileName").value=currentUser.user_metadata?.full_name||"";
+ el("profileEmail").value=currentUser.email||"";
+ el("profileStatus").textContent="Signed in as "+(currentUser.email||"your account")+".";
+}
+
+async function saveProfile(){
+ if(!hbSupabase||!currentUser){alert("Please log in first.");return;}
+ const name=value("profileName").trim();
+ if(!name){el("profileStatus").textContent="Enter your full name.";return;}
+ el("profileStatus").textContent="Saving profile...";
+ const {data,error}=await hbSupabase.auth.updateUser({data:{full_name:name}});
+ if(error){el("profileStatus").textContent="Could not save profile: "+error.message;return;}
+ currentUser=data.user||currentUser;
+ el("profileStatus").textContent="Your profile has been updated.";
+ updateAuthStatus();
+}
+
+async function changePassword(){
+ if(!hbSupabase||!currentUser){alert("Please log in first.");return;}
+ const password=value("newPassword");
+ if(password.length<6){el("profileStatus").textContent="Use a password with at least 6 characters.";return;}
+ el("profileStatus").textContent="Updating password...";
+ const {error}=await hbSupabase.auth.updateUser({password});
+ if(error){el("profileStatus").textContent="Password update failed: "+error.message;return;}
+ el("newPassword").value="";
+ el("profileStatus").textContent="Your password has been updated.";
+}
+
+async function resetPassword(){
+ if(!hbSupabase){alert("Supabase is unavailable. Check your internet connection.");return;}
+ const email=value("authEmail").trim();
+ if(!email){el("authStatus").textContent="Enter your account email first, then tap Forgot password again.";return;}
+ el("authStatus").textContent="Sending password reset email...";
+ const redirectTo=window.location.origin+window.location.pathname;
+ const {error}=await hbSupabase.auth.resetPasswordForEmail(email,{redirectTo});
+ if(error){el("authStatus").textContent="Could not send reset email: "+error.message;return;}
+ el("authStatus").textContent="Password reset email sent. Check your inbox and follow the link.";
+}
+
+/* ACCOUNT-WIDE 12-HOUR TRIAL */
+function showTrialMessage(message, disableButton=false){
+ const status=el("trialStatus");
+ const button=el("startTrialButton");
+ if(status)status.textContent=message;
+ if(button)button.disabled=disableButton;
+}
+
+function runTrialCountdown(expiresAt){
+ if(hbTrialTimer)clearInterval(hbTrialTimer);
+ const expiry=new Date(expiresAt).getTime();
+ if(!Number.isFinite(expiry)){
+  showTrialMessage("We could not read your trial expiry time. Please reload and try again.",false);
+  return;
+ }
+ const tick=()=>{
+  const remaining=expiry-Date.now();
+  if(remaining<=0){
+   if(hbTrialTimer)clearInterval(hbTrialTimer);
+   hbTrialTimer=null;
+   showTrialMessage("Your one-time 12-hour trial has ended.",true);
+   return;
+  }
+  const hours=Math.floor(remaining/3600000);
+  const minutes=Math.floor((remaining%3600000)/60000);
+  const seconds=Math.floor((remaining%60000)/1000);
+  showTrialMessage("Your trial is active. Time remaining: "+hours+"h "+minutes+"m "+seconds+"s.",true);
+ };
+ tick();
+ hbTrialTimer=setInterval(tick,1000);
+}
+
+async function loadMyTrialStatus(){
+ if(!currentUser||!hbSupabase){
+  showTrialMessage("Sign in, then start your one-time 12-hour trial.",false);
+  return;
+ }
+ const {data,error}=await hbSupabase.from("user_trials")
+  .select("started_at,expires_at")
+  .eq("user_id",currentUser.id)
+  .maybeSingle();
+ if(error){
+  showTrialMessage("Could not check your trial: "+error.message,false);
+  return;
+ }
+ if(!data){
+  showTrialMessage("You have not started your trial yet. Tap below when you are ready.",false);
+  return;
+ }
+ if(new Date(data.expires_at).getTime()<=Date.now()){
+  showTrialMessage("Your one-time 12-hour trial has ended.",true);
+  return;
+ }
+ runTrialCountdown(data.expires_at);
+}
+
+async function startMyTrial(){
+ if(!hbSupabase||!currentUser){
+  showTrialMessage("Please sign in before starting your trial.",false);
+  alert("Please sign in first.");
+  return;
+ }
+ const button=el("startTrialButton");
+ if(button)button.disabled=true;
+ showTrialMessage("Starting your account-wide trial…",true);
+ const {data,error}=await hbSupabase.rpc("get_or_start_trial");
+ if(error){
+  showTrialMessage("Trial could not start: "+error.message,false);
+  return;
+ }
+ const trial=Array.isArray(data)?data[0]:data;
+ if(!trial||!trial.trial_expires_at){
+  showTrialMessage("The trial service returned an unexpected response. Please contact support.",false);
+  return;
+ }
+ if(trial.trial_active===false||new Date(trial.trial_expires_at).getTime()<=Date.now()){
+  showTrialMessage("Your one-time 12-hour trial has already ended.",true);
+  return;
+ }
+ runTrialCountdown(trial.trial_expires_at);
+}
+
+/* ADMIN DASHBOARD */
+function setAdminNotice(message){
+ const notice=el("adminAccessNotice");
+ if(notice)notice.textContent=message;
+}
+function resetAdminDashboard(){
+ const menuButton=el("adminMenuButton");
+ if(menuButton)menuButton.style.display="none";
+ const content=el("adminDashboardContent");
+ if(content)content.style.display="none";
+ setAdminNotice("Sign in with an approved administrator account to open this area.");
+ if(el("adminMessage"))el("adminMessage").textContent="";
+}
+async function refreshAdminAccess(){
+ const menuButton=el("adminMenuButton");
+ if(menuButton)menuButton.style.display="none";
+ if(!currentUser||!hbSupabase)return;
+ const {data,error}=await hbSupabase.rpc("get_admin_dashboard_stats");
+ if(!error&&data&&menuButton)menuButton.style.display="block";
+}
+async function loadAdminDashboard(){
+ const content=el("adminDashboardContent");
+ if(content)content.style.display="none";
+ if(!hbSupabase){setAdminNotice("Supabase is unavailable. Check your internet connection and reload.");return;}
+ const {data:{user},error:userError}=await hbSupabase.auth.getUser();
+ if(userError||!user){setAdminNotice("Please sign in from the Account page using your approved administrator account.");return;}
+ setAdminNotice("Verifying administrator permissions…");
+ const {data:stats,error}=await hbSupabase.rpc("get_admin_dashboard_stats");
+ if(error||!stats){
+  setAdminNotice("Access denied or admin service unavailable. Only approved administrators can view this dashboard. Details: "+(error?.message||"No dashboard data returned."));
+  return;
+ }
+ el("adminUsersCount").textContent=stats.total_users??"—";
+ el("adminCampaignsCount").textContent=stats.total_campaigns??"—";
+ setAdminNotice("Administrator access verified.");
+ if(content)content.style.display="block";
+ await loadAdminUsers();
+}
+async function loadAdminUsers(){
+ if(!hbSupabase||!currentUser){setAdminNotice("Please sign in first.");return;}
+ const status=el("adminMessage");
+ const rowsBox=el("adminUserRows");
+ if(status)status.textContent="Loading users…";
+ const {data,error}=await hbSupabase.rpc("get_admin_users",{p_search:value("adminSearch").trim()||null});
+ if(error){if(status)status.textContent="Could not load users: "+error.message;return;}
+ const rows=data||[];
+ if(rowsBox){
+  rowsBox.innerHTML=rows.map(u=>{
+   const banned=u.banned_until&&new Date(u.banned_until)>new Date();
+   return `<tr><td style="padding:9px;border-bottom:1px solid var(--line)">${esc(u.email||"No email")}</td><td style="padding:9px;border-bottom:1px solid var(--line)">${esc(formatAdminDate(u.created_at))}</td><td style="padding:9px;border-bottom:1px solid var(--line)">${esc(formatAdminDate(u.last_sign_in_at))}</td><td style="padding:9px;border-bottom:1px solid var(--line)">${banned?"Suspended":"Active"}</td><td style="padding:9px;border-bottom:1px solid var(--line)"><button class="btn secondary" style="margin:0;padding:7px 9px" data-admin-user="${esc(u.user_id)}" data-admin-action="${banned?"reactivate":"suspend"}">${banned?"Reactivate":"Suspend"}</button></td></tr>`;
+  }).join("")||'<tr><td colspan="5" style="padding:10px">No users found.</td></tr>';
+  rowsBox.querySelectorAll("button[data-admin-user]").forEach(button=>button.addEventListener("click",()=>adminUserAction(button.dataset.adminUser,button.dataset.adminAction,button)));
+ }
+ if(status)status.textContent=`${rows.length} user(s) shown. Maximum 100.`;
+}
+function formatAdminDate(value){return value?new Date(value).toLocaleString():"—";}
+async function adminUserAction(userId,action,button){
+ if(!confirm(`Are you sure you want to ${action} this account?`))return;
+ button.disabled=true;
+ const status=el("adminMessage");
+ if(status)status.textContent="Updating account…";
+ const {data:{session}}=await hbSupabase.auth.getSession();
+ if(!session){button.disabled=false;if(status)status.textContent="Your session has expired. Please sign in again.";return;}
+ const {data,error}=await hbSupabase.functions.invoke("admin-user-action",{
+  body:{user_id:userId,action},
+  headers:{Authorization:`Bearer ${session.access_token}`}
+ });
+ button.disabled=false;
+ if(error||data?.error){if(status)status.textContent="Action failed: "+(data?.error||error.message);return;}
+ if(status)status.textContent=data?.message||"Account updated.";
+ await loadAdminUsers();
+}
+
+/* RESTORE SESSION */
+async function initialiseAuth(){
+ if(!hbSupabase)return;
+ const {data,error}=await hbSupabase.auth.getSession();
+ if(!error&&data.session){
+  currentUser=data.session.user;
+  updateAuthStatus();
+  await loadMyTrialStatus();
+  await refreshAdminAccess();
+  await completePaystackCallback();
+ }
+ hbSupabase.auth.onAuthStateChange((_event,session)=>{
+  currentUser=session?.user||null;
+  updateAuthStatus();
+  if(currentUser){loadMyTrialStatus();refreshAdminAccess();}
+  else {
+   resetAdminDashboard();
+   if(hbTrialTimer)clearInterval(hbTrialTimer);
+   hbTrialTimer=null;
+   showTrialMessage("Sign in, then start your one-time 12-hour trial.",false);
+  }
+ });
+}
+
+/* LOAD CLOUD CAMPAIGNS */
+async function loadCloudCampaigns(){
+ if(!currentUser||!hbSupabase){
+  alert("Please log in first to load your online campaigns.");
+  return;
+ }
+ const {data,error}=await hbSupabase.from("campaigns").select("*").order("created_at",{ascending:false});
+ if(error){
+  alert("Could not load campaigns: "+error.message);
+  return;
+ }
+ const box=el("campaignList");
+ if(!data.length){
+  box.textContent="You have no online campaigns yet.";
+  return;
+ }
+ box.innerHTML=data.map((c,i)=>
+  '<div class="item"><b>'+(i+1)+'. '+esc(c.name)+'</b><br>'+esc(c.platform)+' · '+esc(c.goal)+'<br><small>'+esc(c.created_at||"")+'</small></div>'
+ ).join("");
+ alert("Your online campaigns have loaded.");
+}
+
+/* METRICS */
+function saveMetrics(){
+ const m={followers:value("followers"),likes:value("likes"),comments:value("comments"),views:value("views")};
+ localStorage.setItem("hb_metrics_v2",JSON.stringify(m));
+ el("metricsStatus").textContent="Your figures have been saved on this device.";
+}
+function saveAdResults(){
+ const r={reach:value("adReach"),clicks:value("adClicks"),leads:value("adLeads")};
+ localStorage.setItem("hb_ad_results_v2",JSON.stringify(r));
+ el("adResultStatus").textContent="Advert results saved on this device.";
+}
+
+/* CONTENT TOOLS */
+function makeCaption(){
+ const topic=value("captionTopic").trim()||"my latest update";
+ const styles={
+  "Professional":"Discover more about "+topic+". We are committed to bringing you value and quality. Get in touch to learn more.",
+  "Friendly":"Hey everyone! 😊 Here is something exciting about "+topic+". Tell us what you think in the comments!",
+  "Exciting":"Something exciting is here! 🚀 Check out "+topic+" and share this with someone who needs to see it!",
+  "Inspirational":"Every big journey starts with one step. Keep moving forward and discover more about "+topic+". ✨"
+ };
+ el("captionResult").textContent=styles[value("captionStyle")];
+}
+function makeHashtags(){
+ const topic=(value("hashTopic").trim()||"digital").toLowerCase()
+  .replace(/[^a-z0-9 ]/g,"").trim().replace(/\s+/g,"");
+ el("hashResult").textContent="#"+topic+" #HIGHBEEBOOST #SmallBusiness #ContentCreator #GrowOnline #DigitalMarketing #CreatePromoteGrow";
+}
+function copyText(id){
+ const text=el(id).textContent;
+ if(navigator.clipboard&&navigator.clipboard.writeText){
+  navigator.clipboard.writeText(text).then(()=>alert("Copied!")).catch(()=>alert(text));
+ }else{alert(text)}
+}
+
+/* CREATOR DISCOVERY — local prototype */
+const CREATOR_STORE="hb_creator_profiles_v1";
+function getCreatorProfiles(){
+ try{const rows=JSON.parse(localStorage.getItem(CREATOR_STORE)||"[]");return Array.isArray(rows)?rows:[];}
+ catch(_){return [];}
+}
+function saveCreatorProfile(){
+ const name=value("creatorName").trim();
+ const platform=value("creatorPlatform");
+ const category=value("creatorCategory");
+ const rawUrl=value("creatorUrl").trim();
+ const bio=value("creatorBio").trim();
+ const status=el("creatorStatus");
+ if(!name){status.textContent="Please enter your display name.";return;}
+ let url="";
+ if(rawUrl){
+  try{const parsed=new URL(rawUrl);if(!["https:","http:"].includes(parsed.protocol))throw new Error();url=parsed.href;}
+  catch(_){status.textContent="Enter a valid profile link beginning with https://";return;}
+ }
+ const profiles=getCreatorProfiles();
+ const existing=profiles.findIndex(p=>p.name.toLowerCase()===name.toLowerCase()&&p.platform===platform);
+ const profile={id:existing>=0?profiles[existing].id:("creator-"+Date.now()),name,platform,category,url,bio,updatedAt:new Date().toISOString()};
+ if(existing>=0)profiles[existing]=profile;else profiles.unshift(profile);
+ localStorage.setItem(CREATOR_STORE,JSON.stringify(profiles));
+ status.textContent="Creator card saved on this device.";
+ renderCreatorCards();
+}
+function renderCreatorCards(){
+ const container=el("creatorCards");if(!container)return;
+ const query=value("creatorSearch").trim().toLowerCase();
+ const profiles=getCreatorProfiles().filter(p=>[p.name,p.platform,p.category,p.bio].join(" ").toLowerCase().includes(query));
+ if(!profiles.length){container.innerHTML='<p class="small">No matching creator cards found on this device. Save a profile above to get started.</p>';return;}
+ container.innerHTML=profiles.map(p=>{
+  const safeUrl=(p.url&&/^https?:\/\//i.test(p.url))?p.url:"";
+  return '<article class="item" style="padding:14px 0"><div style="display:flex;justify-content:space-between;gap:10px;align-items:start"><div><b>'+esc(p.name)+'</b><div class="small">'+esc(p.platform)+' · '+esc(p.category)+'</div></div><span class="pill">Creator</span></div><p class="small">'+esc(p.bio||"No introduction added.")+'</p>'+(safeUrl?'<p><a href="'+esc(safeUrl)+'" target="_blank" rel="noopener noreferrer" style="color:var(--gold)">Visit profile</a></p>':'')+'<button class="btn secondary" type="button" onclick="shareCreatorProfile(&quot;'+esc(p.id)+'&quot;)">Share card</button> <button class="btn secondary" type="button" onclick="deleteCreatorProfile(&quot;'+esc(p.id)+'&quot;)">Delete</button></article>';
+ }).join("");
+}
+function shareCreatorProfile(id){
+ const p=getCreatorProfiles().find(x=>x.id===id);if(!p)return;
+ const message=p.name+" — "+p.platform+" creator | "+p.category+(p.url?" | "+p.url:"")+(p.bio?" | "+p.bio:"");
+ if(navigator.share){navigator.share({title:"HIGHBEE BOOST Creator",text:message}).catch(()=>{});}
+ else if(navigator.clipboard?.writeText){navigator.clipboard.writeText(message).then(()=>alert("Creator card copied." )).catch(()=>alert(message));}
+ else{alert(message);}
+}
+function deleteCreatorProfile(id){
+ if(!confirm("Delete this creator card from this device?"))return;
+ localStorage.setItem(CREATOR_STORE,JSON.stringify(getCreatorProfiles().filter(p=>p.id!==id)));
+ renderCreatorCards();
+}
+
+/* WEBSITE BUILDER */
+function siteData(){
+ return{
+  type:value("siteType"),
+  name:value("siteName")||"My Website",
+  headline:value("siteHeadline")||"Welcome to my website",
+  about:value("siteAbout")||"Add your introduction here.",
+  services:value("siteServices")||"Add your products or services here.",
+  contact:value("siteContact")||"Add your contact details"
+ };
+}
+function siteHTML(d){
+ return '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+
+ esc(d.name)+'</title><style>body{margin:0;font-family:Arial;background:#f5f3ed;color:#182338}header{background:#101a2b;color:#e5c477;padding:35px 20px;text-align:center}main{max-width:760px;margin:25px auto;padding:20px}section{background:white;padding:22px;border-radius:14px;margin:14px 0;box-shadow:0 4px 20px #0001}h1{font-size:30px}h2{color:#a9823c}footer{text-align:center;background:#101a2b;color:white;padding:22px}</style></head><body><header><h1>'+
+ esc(d.name)+'</h1><p>'+esc(d.type)+'</p></header><main><section><h2>'+
+ esc(d.headline)+'</h2><p>'+esc(d.about)+'</p></section><section><h2>Products & Services</h2><p>'+
+ esc(d.services).replace(/\n/g,"<br>")+'</p></section><section><h2>Contact</h2><p>'+
+ esc(d.contact)+'</p></section></main><footer>Created with HIGHBEE BOOST</footer></body></html>';
+}
+function previewSite(){
+ const d=siteData();
+ el("sitePreview").innerHTML='<h2>'+esc(d.name)+'</h2><h3 style="color:#a9823c">'+esc(d.headline)+'</h3><p>'+esc(d.about)+'</p><hr><h3 style="color:#a9823c">Products & Services</h3><p>'+esc(d.services).replace(/\n/g,"<br>")+'</p><hr><p><b>Contact:</b> '+esc(d.contact)+'</p><small>Website type: '+esc(d.type)+'</small>';
+}
+function downloadSite(){
+ const d=siteData();
+ const blob=new Blob([siteHTML(d)],{type:"text/html"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download=(d.name.toLowerCase().replace(/[^a-z0-9]+/g,"-")||"my-website")+".html";
+ document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+/* MEMBERSHIP / PAYSTACK CHECKOUT */
+const HB_PLAN_LABELS={
+ "pro-monthly":"Pro Monthly",
+ "pro-lifetime":"Pro Lifetime",
+ "business-monthly":"Business Monthly",
+ "business-lifetime":"Business Lifetime"
+};
+async function getPaymentFunctionError(error,data){
+ if(data?.error)return data.error;
+ const response=error?.context;
+ if(response && typeof response.clone==="function"){
+  try{
+   const body=await response.clone().json();
+   if(body?.error)return body.error;
+   return JSON.stringify(body);
+  }catch(_){
+   try{return await response.clone().text();}catch(__){}
+  }
+ }
+ return error?.message||"Could not start checkout.";
+}
+async function startMembershipPayment(planId){
+ const status=el("membershipStatus");
+ if(!hbSupabase){if(status)status.textContent="Payment service is unavailable. Please reload and try again.";return;}
+ if(!currentUser){if(status)status.textContent="Please log in before choosing a plan.";alert("Please log in first, then choose your plan.");return;}
+ if(!HB_PLAN_LABELS[planId]){if(status)status.textContent="Invalid plan selected.";return;}
+ if(status)status.textContent="Preparing secure checkout for "+HB_PLAN_LABELS[planId]+"...";
+ const {data:sessionData,error:sessionError}=await hbSupabase.auth.getSession();
+ const session=sessionData?.session;
+ if(sessionError||!session){if(status)status.textContent="Your login session has expired. Please log in again.";return;}
+ const {data,error}=await hbSupabase.functions.invoke("paystack-payment",{
+  body:{action:"initialize",plan_id:planId}
+ });
+ if(error||!data?.authorization_url){
+  const message=await getPaymentFunctionError(error,data);
+  if(status)status.textContent="Checkout could not start: "+message;
+  return;
+ }
+ if(status)status.textContent="Opening secure Paystack checkout...";
+ window.location.href=data.authorization_url;
+}
+async function completePaystackCallback(){
+ const params=new URLSearchParams(window.location.search);
+ if(params.get("payment")!=="callback")return;
+ const reference=params.get("reference")||params.get("trxref");
+ const status=el("membershipStatus");
+ if(!reference){if(status)status.textContent="Payment returned without a reference. Please contact support.";return;}
+ if(status)status.textContent="Verifying your payment securely...";
+ const {data,error}=await hbSupabase.functions.invoke("paystack-payment",{
+  body:{action:"verify",reference}
+ });
+ if(error||!data?.success){
+  const message=await getPaymentFunctionError(error,data);
+  if(status)status.textContent="Payment verification was not confirmed: "+message;
+  return;
+ }
+ if(status)status.textContent="Payment successful! Your "+(HB_PLAN_LABELS[data.plan_id]||"selected")+" plan is active.";
+ window.history.replaceState({},document.title,window.location.pathname);
+}
+
+/* SETTINGS */
+function clearLocalData(){
+ if(confirm("Clear saved HIGHBEE BOOST data from this device?")){
+  [STORE,"hb_metrics_v2","hb_ad_results_v2"].forEach(k=>localStorage.removeItem(k));
+  updateCount();renderCampaigns();
+  alert("Local data cleared.");
+ }
+}
+
+/* CINEMATIC SOUND */
+let hbAudio=null;
+let hbSoundPlayed=false;
+
+function playIntroSound(){
+ try{
+  const AudioContext=window.AudioContext||window.webkitAudioContext;
+  if(!AudioContext)throw new Error("Audio not supported");
+  if(hbAudio)hbAudio.close();
+  hbAudio=new AudioContext();
+  hbAudio.resume();
+
+  const melody=[
+   [392,0,.55],[523,.28,.65],[659,.58,.7],
+   [784,.92,.9],[659,1.35,.45],[784,1.65,1.1]
+  ];
+
+  melody.forEach(([frequency,delay,duration])=>{
+   const osc=hbAudio.createOscillator();
+   const gain=hbAudio.createGain();
+   const filter=hbAudio.createBiquadFilter();
+
+   osc.type="sine";
+   osc.frequency.setValueAtTime(frequency,hbAudio.currentTime+delay);
+   filter.type="lowpass";
+   filter.frequency.value=1800;
+
+   const start=hbAudio.currentTime+delay;
+   gain.gain.setValueAtTime(.001,start);
+   gain.gain.linearRampToValueAtTime(.12,start+.08);
+   gain.gain.exponentialRampToValueAtTime(.001,start+duration);
+
+   osc.connect(filter);
+   filter.connect(gain);
+   gain.connect(hbAudio.destination);
+   osc.start(start);
+   osc.stop(start+duration+.05);
+  });
+
+  hbSoundPlayed=true;
+  el("hbSoundButton").textContent="♫ SOUND ON";
+  setTimeout(()=>{if(hbAudio)hbAudio.close().catch(()=>{})},3500);
+ }catch(error){
+  el("hbSoundButton").textContent="SOUND UNAVAILABLE";
+ }
+}
+
+function closeIntro(){
+ const intro=el("hbCinematic");
+ if(intro){
+  intro.style.animation="introExit .5s ease forwards";
+  setTimeout(()=>intro.remove(),550);
+ }
+}
+
+(function startIntro(){
+ const intro=el("hbCinematic");
+ const soundButton=el("hbSoundButton");
+ const skipButton=el("hbSkip");
+
+ soundButton.addEventListener("click",()=>{
+  if(!hbSoundPlayed)playIntroSound();
+  else soundButton.textContent="♫ SOUND ON";
+ });
+
+ skipButton.addEventListener("click",closeIntro);
+ setTimeout(()=>{if(intro&&intro.isConnected)intro.remove()},6000);
+})();
+
+/* STARTUP */
+if(el("adminSearch"))el("adminSearch").addEventListener("keydown",event=>{if(event.key==="Enter")loadAdminUsers();});
+updateCount();
+renderCampaigns();
+initialiseAuth();
+</script>
+
+</body>
+</html>
